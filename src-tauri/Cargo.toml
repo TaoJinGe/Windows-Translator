@@ -1,0 +1,23 @@
+[package]
+name = "windows-translator"
+version = "0.1.0"
+description = "Lightweight Windows translator"
+authors = ["Windows Translator"]
+edition = "2021"
+
+[lib]
+name = "windows_translator_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.5.1", features = [] }
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2.11.2", features = ["tray-icon"] }
+tauri-plugin-clipboard-manager = "2.3.2"
+tauri-plugin-global-shortcut = "2.3.0"
+uuid = { version = "1", features = ["v4"] }

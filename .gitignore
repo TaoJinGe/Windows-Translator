@@ -1,0 +1,16 @@
+node_modules/
+dist/
+release/
+target/
+src-tauri/target/
+src-tauri/target-*/
+src-tauri/target-package/
+.playwright-mcp/
+.env
+.env.*
+*.local
+translator-config.json
+translator-history.json
+*.exe
+*.msi
+*.pdb

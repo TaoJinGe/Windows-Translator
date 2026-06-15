@@ -1,0 +1,22 @@
+{
+  "name": "windows-translator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "package": "powershell -ExecutionPolicy Bypass -File scripts/package.ps1",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/cli": "^2.2.7",
+    "svelte": "^5.19.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
+  },
+  "devDependencies": {}
+}
