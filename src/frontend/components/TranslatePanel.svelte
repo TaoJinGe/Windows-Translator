@@ -109,7 +109,7 @@
       on:change={(event) =>
         updateLanguage($settingsStore.sourceLang, event.currentTarget.value)}
     >
-      {#each languageOptions.filter((item) => item.value !== "auto") as language}
+      {#each languageOptions as language}
         <option value={language.value}>{language.label}</option>
       {/each}
     </select>

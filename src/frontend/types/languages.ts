@@ -9,3 +9,13 @@ export const languageOptions = [
   { label: "西班牙语", value: "es" },
   { label: "俄语", value: "ru" }
 ];
+
+export const languagePairOptions = [
+  { label: "简体中文 ↔ 英语", value: "zh-CN|en" },
+  { label: "简体中文 ↔ 日语", value: "zh-CN|ja" },
+  { label: "简体中文 ↔ 韩语", value: "zh-CN|ko" },
+  { label: "简体中文 ↔ 法语", value: "zh-CN|fr" },
+  { label: "简体中文 ↔ 德语", value: "zh-CN|de" },
+  { label: "简体中文 ↔ 西班牙语", value: "zh-CN|es" },
+  { label: "简体中文 ↔ 俄语", value: "zh-CN|ru" }
+];

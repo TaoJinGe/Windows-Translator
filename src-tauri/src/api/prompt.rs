@@ -1,6 +1,18 @@
-pub fn system_prompt(source_lang: &str, target_lang: &str) -> String {
-    let target_rule = if source_lang == "auto" && target_lang == "zh-CN" {
-        "如果原文是中文，翻译为英文；如果原文不是中文，翻译为简体中文。".to_string()
+pub fn system_prompt(
+    source_lang: &str,
+    target_lang: &str,
+    default_source_lang: &str,
+    default_target_lang: &str,
+) -> String {
+    let target_rule = if target_lang == "auto" {
+        format!(
+            "自动选择目标语言：如果原文是{}，翻译为{}；如果原文是{}，翻译为{}；如果原文不是这两种语言，翻译为{}。",
+            default_source_lang,
+            default_target_lang,
+            default_target_lang,
+            default_source_lang,
+            default_target_lang
+        )
     } else {
         format!("目标语言：{}。", target_lang)
     };

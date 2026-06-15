@@ -2,6 +2,7 @@
   import { onDestroy } from "svelte";
   import { get } from "svelte/store";
   import { persistSettings, settingsStore } from "../stores/settingsStore";
+  import { languagePairOptions } from "../types/languages";
   import { providerOptions } from "../types/models";
   import type { AppSettings } from "../types/settings";
   import { formatHotkey } from "../utils/hotkey";
@@ -82,6 +83,16 @@
   {#if selectedProvider.label === "自定义 OpenAI 兼容"}
     <label>自定义模型名 <input bind:value={form.model} /></label>
   {/if}
+
+  <h2>翻译</h2>
+  <label>
+    默认互译语言
+    <select bind:value={form.defaultLanguagePair}>
+      {#each languagePairOptions as pair}
+        <option value={pair.value}>{pair.label}</option>
+      {/each}
+    </select>
+  </label>
 
   <h2>快捷键</h2>
   <label>

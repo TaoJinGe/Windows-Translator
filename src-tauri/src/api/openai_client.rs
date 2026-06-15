@@ -32,7 +32,10 @@ pub async fn translate(
     settings: &AppSettings,
     request: &TranslateRequest,
 ) -> Result<String, String> {
-    let url = format!("{}/chat/completions", settings.api_base_url.trim_end_matches('/'));
+    let url = format!(
+        "{}/chat/completions",
+        settings.api_base_url.trim_end_matches('/')
+    );
     let body = build_request(settings, request);
     let client = reqwest::Client::new();
     let response = client
@@ -65,13 +68,20 @@ pub async fn translate(
 }
 
 fn build_request(settings: &AppSettings, request: &TranslateRequest) -> ChatRequest {
+    let (default_source_lang, default_target_lang) = settings.default_pair_languages();
+
     ChatRequest {
         model: settings.model.clone(),
         temperature: 0.2,
         messages: vec![
             ChatMessage {
                 role: "system".to_string(),
-                content: prompt::system_prompt(&request.source_lang, &request.target_lang),
+                content: prompt::system_prompt(
+                    &request.source_lang,
+                    &request.target_lang,
+                    default_source_lang,
+                    default_target_lang,
+                ),
             },
             ChatMessage {
                 role: "user".to_string(),
@@ -89,13 +99,53 @@ fn strip_thinking(value: &str) -> String {
         let Some(start) = lower.find("<think>") else {
             break;
         };
-        let Some(end) = lower.find("</think>") else {
+        let Some(end_offset) = lower[start..].rfind("</think>") else {
             remaining.replace_range(start.., "");
             break;
         };
+        let end = start + end_offset;
 
         remaining.replace_range(start..end + "</think>".len(), "");
     }
 
+    let lower = remaining.to_lowercase();
+    if let Some(end) = lower.rfind("</think>") {
+        remaining.replace_range(..end + "</think>".len(), "");
+    }
+
     remaining.trim().to_string()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::strip_thinking;
+
+    #[test]
+    fn removes_thinking_that_quotes_closing_tag() {
+        let value = "<think>
+Do not output <think>, </think> or any chain-of-thought content.
+Wait, I need to reconsider.
+</think>
+
+AI Translator";
+
+        assert_eq!(strip_thinking(value), "AI Translator");
+    }
+
+    #[test]
+    fn removes_unclosed_thinking() {
+        let value = "<think>
+I should not show this.";
+
+        assert_eq!(strip_thinking(value), "");
+    }
+
+    #[test]
+    fn removes_stray_closing_tag_prefix() {
+        let value = "Hidden reasoning leaked.
+</think>
+Final translation";
+
+        assert_eq!(strip_thinking(value), "Final translation");
+    }
 }
