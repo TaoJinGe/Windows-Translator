@@ -14,6 +14,6 @@ HotkeySettings.svelte —— 快捷键设置组组件，只负责快捷键输入
 HotkeyInput.svelte —— 单个快捷键输入组件，只负责录制态展示和键盘事件入口（修改影响快捷键输入交互）
 WindowSettings.svelte —— 窗口设置组件，只负责关闭行为、置顶、流式输出选项（修改影响窗口配置 UI）
 SaveSettingsButton.svelte —— 保存设置按钮组件，只负责提交入口和保存状态展示（修改影响保存按钮 UI）
-HistoryPanel.svelte —— 历史面板，负责读取、刷新、清空历史记录（修改影响历史 UI 与数据展示）
+HistoryPanel.svelte —— 历史面板，负责读取、刷新、清空、展示原文/译文和复制历史文本（修改影响历史 UI 与数据展示）
 WindowHeader.svelte —— 预留标题栏组件，负责全局窗口头部结构（修改影响全局头部 UI）
 IconButton.svelte —— 通用图标按钮组件，负责可复用按钮外壳和禁用状态（修改影响按钮视觉与交互）
