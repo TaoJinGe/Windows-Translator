@@ -1,5 +1,6 @@
 use tauri::{AppHandle, Manager};
 
+use crate::autostart;
 use crate::config::app_config::AppSettings;
 use crate::hotkey::global_hotkey;
 use crate::storage::settings_store;
@@ -15,6 +16,10 @@ pub fn save_settings(app: AppHandle, settings: AppSettings) -> Result<AppSetting
 
     if old_settings.hotkey != settings.hotkey {
         global_hotkey::replace(&app, &old_settings.hotkey, &settings.hotkey)?;
+    }
+
+    if old_settings.launch_at_startup != settings.launch_at_startup {
+        autostart::sync(&app, settings.launch_at_startup)?;
     }
 
     settings_store::write(&app, &settings)?;

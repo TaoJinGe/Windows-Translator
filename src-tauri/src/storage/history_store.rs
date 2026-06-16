@@ -32,7 +32,8 @@ pub fn clear(app: &AppHandle) -> Result<(), String> {
 
 fn write(app: &AppHandle, items: &[TranslationHistoryItem]) -> Result<(), String> {
     let path = paths::history_path(app)?;
-    let content = serde_json::to_string_pretty(items).map_err(|_| "无法保存历史记录".to_string())?;
+    let content =
+        serde_json::to_string_pretty(items).map_err(|_| "无法保存历史记录".to_string())?;
 
     fs::write(path, content).map_err(|_| "无法写入历史记录".to_string())
 }

@@ -3,7 +3,7 @@
   import HistoryPanel from "./components/HistoryPanel.svelte";
   import SettingsPanel from "./components/SettingsPanel.svelte";
   import TranslatePanel from "./components/TranslatePanel.svelte";
-  import { hideMainWindow, onOpenSettings } from "./services/tauriApi";
+  import { hideMainWindow, onOpenSettings, showMainWindow } from "./services/tauriApi";
   import { activeView, type ActiveView } from "./stores/appState";
   import { loadSettings } from "./stores/settingsStore";
 
@@ -14,13 +14,23 @@
   ];
 
   onMount(() => {
-    void loadSettings();
+    void initializeWindow();
     const unlisten = onOpenSettings(() => activeView.set("settings"));
 
     return () => {
       void unlisten.then((stop) => stop());
     };
   });
+
+  async function initializeWindow(): Promise<void> {
+    try {
+      await loadSettings();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await showMainWindow();
+    }
+  }
 
   function handleKeydown(event: KeyboardEvent): void {
     if (event.key === "Escape") {

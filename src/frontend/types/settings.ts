@@ -11,6 +11,7 @@ export interface AppSettings {
   clearHotkey: string;
   alwaysOnTop: boolean;
   streamOutput: boolean;
+  launchAtStartup: boolean;
   closeAction: "tray" | "minimize";
 }
 
@@ -27,5 +28,6 @@ export const defaultSettings: AppSettings = {
   clearHotkey: "Ctrl+Backspace",
   alwaysOnTop: false,
   streamOutput: false,
+  launchAtStartup: false,
   closeAction: "tray"
 };

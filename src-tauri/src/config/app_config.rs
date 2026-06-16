@@ -21,6 +21,7 @@ pub struct AppSettings {
     pub clear_hotkey: String,
     pub always_on_top: bool,
     pub stream_output: bool,
+    pub launch_at_startup: bool,
     pub close_action: String,
 }
 
@@ -41,14 +42,13 @@ impl AppSettings {
         }
 
         if self.default_language_pair.trim().is_empty() {
-            self.default_language_pair =
-                if is_concrete_language(&self.default_source_lang)
-                    && is_concrete_language(&self.default_target_lang)
-                {
-                    format!("{}|{}", self.default_source_lang, self.default_target_lang)
-                } else {
-                    defaults::DEFAULT_LANGUAGE_PAIR.to_string()
-                };
+            self.default_language_pair = if is_concrete_language(&self.default_source_lang)
+                && is_concrete_language(&self.default_target_lang)
+            {
+                format!("{}|{}", self.default_source_lang, self.default_target_lang)
+            } else {
+                defaults::DEFAULT_LANGUAGE_PAIR.to_string()
+            };
         }
 
         if !is_valid_language_pair(&self.default_language_pair) {
@@ -94,6 +94,7 @@ impl Default for AppSettings {
             clear_hotkey: "Ctrl+Backspace".to_string(),
             always_on_top: false,
             stream_output: false,
+            launch_at_startup: false,
             close_action: "tray".to_string(),
         }
     }

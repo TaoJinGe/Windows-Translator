@@ -2,7 +2,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { defaultSettings, type AppSettings } from "../types/settings";
 import type { TranslationHistoryItem } from "../types/history";
-import type { TranslateRequest, TranslateResponse } from "../types/translation";
+import type {
+  TranslateRequest,
+  TranslateResponse,
+  TranslationStreamEvent
+} from "../types/translation";
 
 export function isTauriRuntime(): boolean {
   return "__TAURI_INTERNALS__" in window;
@@ -28,6 +32,18 @@ export async function translateText(request: TranslateRequest): Promise<Translat
   return invoke<TranslateResponse>("translate_text", { request });
 }
 
+export async function listenTranslationStream(
+  callback: (event: TranslationStreamEvent) => void
+): Promise<() => void> {
+  if (!isTauriRuntime()) {
+    return () => {};
+  }
+
+  return listen<TranslationStreamEvent>("translation-stream", (event) => {
+    callback(event.payload);
+  });
+}
+
 export async function getHistory(): Promise<TranslationHistoryItem[]> {
   if (!isTauriRuntime()) {
     return [];
@@ -51,6 +67,12 @@ export async function copyToClipboard(text: string): Promise<void> {
 export async function hideMainWindow(): Promise<void> {
   if (isTauriRuntime()) {
     await invoke("hide_main_window");
+  }
+}
+
+export async function showMainWindow(): Promise<void> {
+  if (isTauriRuntime()) {
+    await invoke("show_main_window");
   }
 }
 

@@ -2,9 +2,12 @@
   import { copyText } from "../services/clipboard";
   import { requestTranslation } from "../services/translator";
   import { persistSettings, settingsStore } from "../stores/settingsStore";
-  import { languageOptions } from "../types/languages";
   import { matchesHotkey } from "../utils/hotkey";
   import { hasText, normalizeError } from "../utils/text";
+  import ClearButton from "./ClearButton.svelte";
+  import CopyResultButton from "./CopyResultButton.svelte";
+  import LanguageSelector from "./LanguageSelector.svelte";
+  import TranslateButton from "./TranslateButton.svelte";
 
   let sourceText = "";
   let translatedText = "";
@@ -20,12 +23,16 @@
 
     loading = true;
     errorMessage = "";
+    translatedText = "";
 
     try {
       translatedText = await requestTranslation(
         sourceText,
         $settingsStore.sourceLang,
-        $settingsStore.targetLang
+        $settingsStore.targetLang,
+        (delta) => {
+          translatedText += delta;
+        }
       );
     } catch (error) {
       errorMessage = normalizeError(error);
@@ -91,42 +98,21 @@
 </script>
 
 <section class="panel">
-  <div class="language-row">
-    <select
-      aria-label="源语言"
-      value={$settingsStore.sourceLang}
-      on:change={(event) =>
-        updateLanguage(event.currentTarget.value, $settingsStore.targetLang)}
-    >
-      {#each languageOptions as language}
-        <option value={language.value}>{language.label}</option>
-      {/each}
-    </select>
-    <button type="button" class="swap-button" on:click={swapLanguages} title="交换语言">⇄</button>
-    <select
-      aria-label="目标语言"
-      value={$settingsStore.targetLang}
-      on:change={(event) =>
-        updateLanguage($settingsStore.sourceLang, event.currentTarget.value)}
-    >
-      {#each languageOptions as language}
-        <option value={language.value}>{language.label}</option>
-      {/each}
-    </select>
-  </div>
+  <LanguageSelector
+    sourceLang={$settingsStore.sourceLang}
+    targetLang={$settingsStore.targetLang}
+    on:change={(event) => updateLanguage(event.detail.sourceLang, event.detail.targetLang)}
+    on:swap={swapLanguages}
+  />
   <textarea
     bind:value={sourceText}
     on:keydown={handleKeydown}
     placeholder="输入要翻译的文本"
   ></textarea>
   <div class="actions">
-    <button type="button" on:click={translate} disabled={loading}>
-      {loading ? "翻译中" : "翻译"}
-    </button>
-    <button type="button" class:copied={copyStatus === "已复制"} on:click={copyResult}>
-      {copyStatus}
-    </button>
-    <button type="button" on:click={clearAll}>清空</button>
+    <TranslateButton {loading} on:click={translate} />
+    <CopyResultButton status={copyStatus} on:click={copyResult} />
+    <ClearButton on:click={clearAll} />
   </div>
   {#if errorMessage}
     <p class="error">{errorMessage}</p>

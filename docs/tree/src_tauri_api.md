@@ -2,6 +2,6 @@
 
 对应真实目录：`/src-tauri/src/api`
 
-mod.rs —— api 模块导出入口（修改影响模块引用）
-prompt.rs —— 翻译系统提示词，负责目标语言、自动目标和自动检测规则（修改影响模型输出）
-openai_client.rs —— OpenAI 兼容 HTTP 客户端，负责请求、错误、译文解析和 think 过滤（修改影响翻译 API）
+mod.rs —— api 模块导出入口，负责开放 prompt 与 openai_client 模块（修改影响模块引用）
+prompt.rs —— 翻译提示词构建模块，负责语言规则和输出约束（修改影响模型输出）
+openai_client.rs —— OpenAI 兼容 HTTP 客户端，负责非流式/流式翻译、SSE 解析、错误处理和思考内容过滤（修改影响翻译 API 行为）

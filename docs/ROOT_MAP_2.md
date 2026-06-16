@@ -11,12 +11,14 @@
 /src-tauri/capabilities/ —— Tauri v2 权限能力配置（修改影响前端调用权限）
 /src-tauri/icons/ —— Tauri 图标资源目录（修改影响 EXE/MSI 图标）
 /src-tauri/gen/ —— Tauri 自动生成 schema 目录（AI 禁止手动修改）
-/src-tauri/target-package/ —— Rust 构建缓存目录，可再生成（AI 禁止修改产物）
+/src-tauri/target/ —— Rust 构建缓存目录，可再生成（AI 禁止修改产物）
+/src-tauri/target-package/ —— Tauri 发布构建缓存目录，可再生成（AI 禁止修改产物）
 
 ## Rust 源码
 
 /src-tauri/src/main.rs —— Windows release 子系统入口和 lib 调用（修改影响启动方式）
 /src-tauri/src/lib.rs —— Tauri 应用组装、插件、托盘、快捷键、窗口事件入口（修改影响桌面核心）
+/src-tauri/src/autostart.rs —— 开机自启动同步模块，负责按设置启用或关闭系统自启动（修改影响启动项）
 /src-tauri/src/commands/ —— 暴露给前端 invoke 的 command 目录（修改影响 API 边界）
 /src-tauri/src/config/ —— AppSettings 和默认值目录（修改影响本地配置结构）
 /src-tauri/src/storage/ —— 设置和历史 JSON 存储目录（修改影响持久化）
@@ -30,12 +32,7 @@
 /docs/AI_SYSTEM_RULES.md —— 文件系统索引协议唯一规则文件（修改影响 AI 执行规则）
 /docs/ROOT_MAP_1.md —— 根目录和前端索引（修改影响导航入口）
 /docs/ROOT_MAP_2.md —— 后端和文档索引（修改影响导航入口）
-/docs/PROJECT_OVERVIEW.md —— 项目概览和运行说明（修改影响项目理解）
-/docs/ARCHITECTURE.md —— 前后端架构说明（修改影响系统理解）
-/docs/FILE_MAP.md —— 原有全量文件职责地图（修改影响旧导航文档）
-/docs/DEVELOPMENT_LOG.md —— 阶段开发日志（修改影响变更追踪）
 /docs/TODO.md —— 后续任务列表（修改影响计划）
-/docs/DECISIONS.md —— 技术决策记录（修改影响决策追溯）
 /docs/tree/ —— 子目录 Tree Map 目录（修改影响二级索引）
 
 ## Tree Maps
