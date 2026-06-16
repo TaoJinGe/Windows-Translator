@@ -43,16 +43,20 @@ AI必须优先读取
 
 命名规则：
 
-/docs/ROOT_MAP_*.md
+/docs/root/ROOT_MAP_*.md
 
 允许多个：
 
-✔ ROOT_MAP_1.md
-✔ ROOT_MAP_2.md
-✔ ROOT_MAP_admin.md
+✔ /docs/root/ROOT_MAP_1.md
+✔ /docs/root/ROOT_MAP_2.md
+✔ /docs/root/ROOT_MAP_admin.md
 
 规则：
 
+所有总目录文件必须统一放入 /docs/root/ 文件夹
+/docs/root/ 与 /docs/tree/ 同级，分别管理总目录和子目录
+/docs 根目录只保留 AI_SYSTEM_RULES.md、TODO.md 等少量入口说明文件
+禁止把 ROOT_MAP_*.md 直接堆放在 /docs 根目录，避免后续 ROOT_MAP_3、ROOT_MAP_4 等文件过多影响拖拽说明文件
 每个总目录必须 ≤ 300 行
 超过必须拆分成多个 ROOT_MAP
 每个 ROOT_MAP 覆盖一部分目录结构
@@ -205,9 +209,9 @@ ROOT_MAP 超过 300 行
 
 规则：
 
-ROOT_MAP_1.md → 管理 src / components
-ROOT_MAP_2.md → 管理 services / utils
-ROOT_MAP_3.md → 管理 config / others
+/docs/root/ROOT_MAP_1.md → 管理 src / components
+/docs/root/ROOT_MAP_2.md → 管理 services / utils
+/docs/root/ROOT_MAP_3.md → 管理 config / others
 
 AI使用规则：
 
@@ -272,7 +276,7 @@ Step 1：
 读取 AI_SYSTEM_RULES.md
 
 Step 2：
-读取 ROOT_MAP_*
+读取 /docs/root/ROOT_MAP_*
 
 Step 3：
 定位目标 TREE_MAP
