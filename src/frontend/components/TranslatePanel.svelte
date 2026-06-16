@@ -14,7 +14,6 @@
   let loading = false;
   let errorMessage = "";
   let savingLanguage = false;
-  let copyStatus = "复制";
 
   async function translate(): Promise<void> {
     if (!hasText(sourceText) || loading) {
@@ -45,16 +44,11 @@
     sourceText = "";
     translatedText = "";
     errorMessage = "";
-    copyStatus = "复制";
   }
 
   async function copyResult(): Promise<void> {
     try {
       await copyText(translatedText);
-      copyStatus = "已复制";
-      window.setTimeout(() => {
-        copyStatus = "复制";
-      }, 1200);
     } catch (error) {
       errorMessage = normalizeError(error);
     }
@@ -111,7 +105,7 @@
   ></textarea>
   <div class="actions">
     <TranslateButton {loading} on:click={translate} />
-    <CopyResultButton status={copyStatus} on:click={copyResult} />
+    <CopyResultButton on:click={copyResult} />
     <ClearButton on:click={clearAll} />
   </div>
   {#if errorMessage}

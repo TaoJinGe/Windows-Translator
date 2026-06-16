@@ -31,6 +31,19 @@ try {
   Write-Host "Release artifacts:"
   Write-Host " - release\windows-translator.exe"
   Write-Host " - release\$($msi.Name)"
+
+  if (Test-Path $targetDir) {
+    $resolvedTargetDir = Resolve-Path $targetDir
+    $expectedTargetDir = Join-Path $root "src-tauri\target-package"
+
+    if ($resolvedTargetDir.Path -ne $expectedTargetDir) {
+      throw "Refusing to clean unexpected build cache path: $($resolvedTargetDir.Path)"
+    }
+
+    Remove-Item -LiteralPath $resolvedTargetDir.Path -Recurse -Force
+    Write-Host "Cleaned build cache:"
+    Write-Host " - src-tauri\target-package"
+  }
 }
 finally {
   Pop-Location
