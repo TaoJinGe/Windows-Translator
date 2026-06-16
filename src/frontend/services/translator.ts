@@ -19,7 +19,7 @@ export async function requestTranslation(
   const settings = get(settingsStore);
 
   if (!settings.apiKey.trim()) {
-    throw new Error("璇峰厛濉啓 API Key");
+    throw new Error("请先填写 API Key");
   }
 
   const requestId = createRequestId();
