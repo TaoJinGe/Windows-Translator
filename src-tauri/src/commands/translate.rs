@@ -2,9 +2,10 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, State};
 
 use crate::api::openai_client;
-use crate::commands::history::TranslationHistoryItem;
-use crate::storage::history_store;
 use crate::storage::settings_store;
+
+use super::translation_api_key::assert_api_key;
+use super::translation_history_append::append_translation_history;
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -29,29 +30,15 @@ pub async fn translate_text(
 ) -> Result<TranslateResponse, String> {
     let settings = settings_store::read(&app)?;
 
-    if settings.api_key.trim().is_empty() {
-        return Err("请先填写 API Key".to_string());
-    }
+    assert_api_key(&settings)?;
 
     let translated_text = if settings.stream_output {
         openai_client::translate_stream(&app, &client, &settings, &request).await?
     } else {
         openai_client::translate(&client, &settings, &request).await?
     };
-    let item = TranslationHistoryItem {
-        id: uuid::Uuid::new_v4().to_string(),
-        source_text: request.source_text.clone(),
-        translated_text: translated_text.clone(),
-        source_lang: request.source_lang.clone(),
-        target_lang: request.target_lang.clone(),
-        model: settings.model,
-        created_at: chrono::Utc::now().to_rfc3339(),
-    };
 
-    let history_app = app.clone();
-    tauri::async_runtime::spawn_blocking(move || {
-        let _ = history_store::append(&history_app, item);
-    });
+    append_translation_history(&app, &settings.model, &request, &translated_text);
 
     Ok(TranslateResponse { translated_text })
 }

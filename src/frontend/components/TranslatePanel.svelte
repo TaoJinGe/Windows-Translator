@@ -1,13 +1,14 @@
 <script lang="ts">
   import { copyText } from "../services/clipboard";
-  import { requestTranslation } from "../services/translator";
-  import { persistSettings, settingsStore } from "../stores/settingsStore";
+  import { saveTranslationLanguages } from "../services/languageSettings";
+  import { runTranslation } from "../services/translationRunner";
+  import { settingsStore } from "../stores/settingsStore";
   import { matchesHotkey } from "../utils/hotkey";
   import { hasText, normalizeError } from "../utils/text";
-  import ClearButton from "./ClearButton.svelte";
-  import CopyResultButton from "./CopyResultButton.svelte";
   import LanguageSelector from "./LanguageSelector.svelte";
-  import TranslateButton from "./TranslateButton.svelte";
+  import TranslateActionBar from "./TranslateActionBar.svelte";
+  import TranslationInput from "./TranslationInput.svelte";
+  import TranslationResultBox from "./TranslationResultBox.svelte";
 
   let sourceText = "";
   let translatedText = "";
@@ -25,12 +26,12 @@
     translatedText = "";
 
     try {
-      translatedText = await requestTranslation(
+      translatedText = await runTranslation(
         sourceText,
         $settingsStore.sourceLang,
         $settingsStore.targetLang,
-        (delta) => {
-          translatedText += delta;
+        (value) => {
+          translatedText = value;
         }
       );
     } catch (error) {
@@ -74,7 +75,7 @@
     savingLanguage = true;
 
     try {
-      await persistSettings({ ...$settingsStore, sourceLang, targetLang });
+      await saveTranslationLanguages($settingsStore, sourceLang, targetLang);
     } catch (error) {
       errorMessage = normalizeError(error);
     } finally {
@@ -98,18 +99,10 @@
     on:change={(event) => updateLanguage(event.detail.sourceLang, event.detail.targetLang)}
     on:swap={swapLanguages}
   />
-  <textarea
-    bind:value={sourceText}
-    on:keydown={handleKeydown}
-    placeholder="输入要翻译的文本"
-  ></textarea>
-  <div class="actions">
-    <TranslateButton {loading} on:click={translate} />
-    <CopyResultButton on:click={copyResult} />
-    <ClearButton on:click={clearAll} />
-  </div>
+  <TranslationInput bind:value={sourceText} {handleKeydown} />
+  <TranslateActionBar {loading} {translate} {copyResult} {clearAll} />
   {#if errorMessage}
     <p class="error">{errorMessage}</p>
   {/if}
-  <textarea class="result" bind:value={translatedText} readonly placeholder="翻译结果"></textarea>
+  <TranslationResultBox bind:value={translatedText} />
 </section>

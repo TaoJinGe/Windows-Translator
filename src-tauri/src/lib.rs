@@ -1,4 +1,18 @@
 mod api;
+mod app_clipboard_plugin;
+mod app_global_shortcut_plugin;
+mod app_run;
+mod app_setup;
+mod app_setup_autostart;
+mod app_setup_autostart_plugin;
+mod app_setup_hotkey;
+mod app_setup_settings;
+mod app_setup_tray;
+mod app_setup_window;
+mod app_state;
+mod app_window_close_event;
+mod app_window_event;
+mod app_window_focus_event;
 mod autostart;
 mod commands;
 mod config;
@@ -7,43 +21,6 @@ mod storage;
 mod tray;
 mod window;
 
-use tauri::{Manager, WindowEvent};
-
 pub fn run() {
-    tauri::Builder::default()
-        .manage(reqwest::Client::new())
-        .plugin(tauri_plugin_clipboard_manager::init())
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .setup(|app| {
-            #[cfg(desktop)]
-            app.handle().plugin(tauri_plugin_autostart::init(
-                tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-                None,
-            ))?;
-
-            let handle = app.handle().clone();
-            let settings = storage::settings_store::read(&handle).unwrap_or_default();
-
-            if let Some(window) = handle.get_webview_window("main") {
-                let _ = window.set_always_on_top(settings.always_on_top);
-            }
-
-            let _ = autostart::sync(&handle, settings.launch_at_startup);
-            tray::app_tray::create(&handle)?;
-            let _ = hotkey::global_hotkey::register(&handle, &settings.hotkey);
-            Ok(())
-        })
-        .on_window_event(|window, event| {
-            if let WindowEvent::CloseRequested { api, .. } = event {
-                api.prevent_close();
-                window::window_control::handle_close_requested(window);
-            }
-
-            if matches!(event, WindowEvent::Focused(false)) {
-                let _ = window.set_always_on_top(false);
-            }
-        })
-        .invoke_handler(commands::handlers())
-        .run(tauri::generate_context!())
-        .expect("failed to run app");
+    app_run::run();
 }

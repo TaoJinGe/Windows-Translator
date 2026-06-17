@@ -7,8 +7,8 @@ package-lock.json —— npm 锁定文件，负责依赖版本复现（通常不
 vite.config.ts —— Vite 配置，负责 Svelte 前端构建（修改影响 dev/build）
 tsconfig.json —— TypeScript 配置，负责严格类型规则（修改影响前端检查）
 index.html —— HTML 入口，负责挂载前端应用（修改影响页面加载）
-README.md —— 用户说明文档，负责运行和打包说明（修改影响文档）
-.gitignore —— 忽略规则，负责排除依赖和产物（修改影响版本控制）
+README.md —— 用户说明文档，负责项目使用说明（修改影响文档）
+.gitignore —— 忽略规则，负责版本控制排除模式（修改影响版本控制）
 src/ —— 前端源码和样式顶层目录（修改影响 UI）
 src-tauri/ —— Rust/Tauri 桌面端目录（修改影响系统能力）
 docs/ —— 项目文档和索引目录（修改影响 AI 导航）

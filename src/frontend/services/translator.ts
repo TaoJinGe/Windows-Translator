@@ -1,14 +1,9 @@
 import { get } from "svelte/store";
 import { settingsStore } from "../stores/settingsStore";
-import { listenTranslationStream, translateText } from "./tauriApi";
-
-function createRequestId(): string {
-  if ("crypto" in window && "randomUUID" in window.crypto) {
-    return window.crypto.randomUUID();
-  }
-
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
+import { assertTranslationApiKey } from "./translationApiKey";
+import { translateText } from "./translationApi";
+import { createTranslationRequestId } from "./translationRequestId";
+import { listenTranslationStream } from "./translationStreamApi";
 
 export async function requestTranslation(
   sourceText: string,
@@ -18,11 +13,9 @@ export async function requestTranslation(
 ): Promise<string> {
   const settings = get(settingsStore);
 
-  if (!settings.apiKey.trim()) {
-    throw new Error("请先填写 API Key");
-  }
+  assertTranslationApiKey(settings);
 
-  const requestId = createRequestId();
+  const requestId = createTranslationRequestId();
   let unlisten: (() => void) | undefined;
 
   if (settings.streamOutput && onStreamDelta) {

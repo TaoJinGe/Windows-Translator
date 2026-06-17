@@ -1,0 +1,56 @@
+.history-panel ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-panel li {
+  border: 1px solid #d2d9df;
+  border-radius: 6px;
+  padding: 9px;
+  background: #ffffff;
+}
+
+.history-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  color: #52616f;
+  font-size: 13px;
+}
+
+.history-meta span {
+  font-weight: 650;
+  color: #172026;
+}
+
+.history-text {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.history-text strong {
+  display: block;
+  font-size: 13px;
+}
+
+.history-panel p {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.history-actions button {
+  padding: 0 12px;
+}

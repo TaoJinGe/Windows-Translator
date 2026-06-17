@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { get } from "svelte/store";
-  import { persistSettings, settingsStore } from "../stores/settingsStore";
-  import { providerOptions } from "../types/models";
+  import { applyProviderDefaults } from "../services/applyProviderDefaults";
+  import { findSelectedProvider } from "../services/findSelectedProvider";
+  import { recordSettingsHotkey } from "../services/settingsHotkeyRecorder";
+  import { persistSettings } from "../stores/persistSettings";
+  import { settingsStore } from "../stores/settingsStore";
   import type { AppSettings } from "../types/settings";
-  import { formatHotkey } from "../utils/hotkey";
   import { normalizeError } from "../utils/text";
   import HotkeySettings from "./HotkeySettings.svelte";
   import ProviderSettings from "./ProviderSettings.svelte";
@@ -35,28 +37,13 @@
   }
 
   function selectProvider(label: string): void {
-    const provider = providerOptions.find((item) => item.label === label);
-
-    if (!provider) {
-      return;
-    }
-
-    form.apiBaseUrl = provider.apiBaseUrl || form.apiBaseUrl;
-    form.model = provider.models[0]?.value || form.model;
+    form = applyProviderDefaults(form, label);
   }
 
   function recordHotkey(event: KeyboardEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const hotkey = formatHotkey(event);
-
-    if (!recordingField || !hotkey) {
-      return;
-    }
-
-    form = { ...form, [recordingField]: hotkey };
-    recordingField = "";
+    const recorded = recordSettingsHotkey(form, recordingField, event);
+    form = recorded.form;
+    recordingField = recorded.recordingField;
   }
 
   function startRecording(field: keyof AppSettings): void {
@@ -64,8 +51,7 @@
   }
 
   $: selectedProvider =
-    providerOptions.find((item) => item.apiBaseUrl === form.apiBaseUrl) ??
-    providerOptions[providerOptions.length - 1];
+    findSelectedProvider(form.apiBaseUrl);
 </script>
 
 <form class="panel settings-panel" on:submit|preventDefault={save}>

@@ -1,2 +1,11 @@
 pub mod app_config;
-pub mod defaults;
+pub mod app_settings_default;
+pub mod app_settings_language_pair;
+pub mod app_settings_normalize;
+pub mod default_api;
+pub mod default_hotkeys;
+pub mod default_languages;
+pub mod default_model;
+pub mod default_settings_version;
+pub mod default_window;
+pub mod language_pair;

@@ -1,9 +1,11 @@
-use tauri::{AppHandle, Manager};
+use tauri::AppHandle;
 
-use crate::autostart;
 use crate::config::app_config::AppSettings;
-use crate::hotkey::global_hotkey;
 use crate::storage::settings_store;
+
+use super::settings_autostart::sync_launch_at_startup;
+use super::settings_hotkey::sync_settings_hotkey;
+use super::settings_window::apply_always_on_top;
 
 #[tauri::command]
 pub fn get_settings(app: AppHandle) -> Result<AppSettings, String> {
@@ -14,21 +16,11 @@ pub fn get_settings(app: AppHandle) -> Result<AppSettings, String> {
 pub fn save_settings(app: AppHandle, settings: AppSettings) -> Result<AppSettings, String> {
     let old_settings = settings_store::read(&app).unwrap_or_default();
 
-    if old_settings.hotkey != settings.hotkey {
-        global_hotkey::replace(&app, &old_settings.hotkey, &settings.hotkey)?;
-    }
-
-    if old_settings.launch_at_startup != settings.launch_at_startup {
-        autostart::sync(&app, settings.launch_at_startup)?;
-    }
+    sync_settings_hotkey(&app, &old_settings, &settings)?;
+    sync_launch_at_startup(&app, &old_settings, &settings)?;
 
     settings_store::write(&app, &settings)?;
-
-    if let Some(window) = app.get_webview_window("main") {
-        window
-            .set_always_on_top(settings.always_on_top)
-            .map_err(|_| "窗口置顶设置失败".to_string())?;
-    }
+    apply_always_on_top(&app, settings.always_on_top)?;
 
     Ok(settings)
 }

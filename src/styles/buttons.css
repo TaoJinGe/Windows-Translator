@@ -1,0 +1,37 @@
+button {
+  min-height: 32px;
+  border: 1px solid #b8c3cc;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #172026;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: #55718d;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+button.active {
+  background: #17324d;
+  color: #ffffff;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  padding: 0 14px;
+}
+
+.actions button:active:not(:disabled) {
+  border-color: #26705f;
+  background: #e4f6ef;
+  color: #135343;
+}

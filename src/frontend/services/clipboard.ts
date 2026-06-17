@@ -1,4 +1,5 @@
-import { copyToClipboard, isTauriRuntime } from "./tauriApi";
+import { copyToClipboard } from "./clipboardApi";
+import { isTauriRuntime } from "./tauriRuntime";
 
 export async function copyText(value: string): Promise<void> {
   if (!value.trim()) {

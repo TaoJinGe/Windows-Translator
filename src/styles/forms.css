@@ -1,0 +1,24 @@
+textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  border: 1px solid #b8c3cc;
+  border-radius: 6px;
+  padding: 10px;
+  background: #ffffff;
+}
+
+input {
+  min-height: 34px;
+  border: 1px solid #b8c3cc;
+  border-radius: 6px;
+  padding: 0 9px;
+}
+
+select {
+  min-height: 34px;
+  border: 1px solid #b8c3cc;
+  border-radius: 6px;
+  padding: 0 9px;
+  background: #ffffff;
+}
