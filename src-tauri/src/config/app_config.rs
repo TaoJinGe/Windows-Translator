@@ -20,5 +20,8 @@ pub struct AppSettings {
     pub always_on_top: bool,
     pub stream_output: bool,
     pub launch_at_startup: bool,
+    pub remember_window_position: bool,
+    pub window_position_x: Option<i32>,
+    pub window_position_y: Option<i32>,
     pub close_action: String,
 }

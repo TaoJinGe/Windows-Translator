@@ -70,6 +70,7 @@
 /src-tauri/src/tray/tray_settings_action.rs —— 托盘设置动作模块，只负责打开设置页事件（修改影响设置入口）
 /src-tauri/src/tray/tray_quit_action.rs —— 托盘退出动作模块，只负责退出应用动作（修改影响退出入口）
 /src-tauri/src/window/ —— 窗口显示、隐藏、关闭行为目录（修改影响窗口体验）
+/src-tauri/src/window/window_position_memory.rs —— 窗口位置记忆模块，只负责记录和恢复主窗口坐标（修改影响启动位置）
 
 ## 文档系统
 

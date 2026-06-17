@@ -15,3 +15,4 @@
 <label class="check"><input type="checkbox" bind:checked={form.alwaysOnTop} /> 窗口置顶</label>
 <label class="check"><input type="checkbox" bind:checked={form.streamOutput} /> 流式输出</label>
 <label class="check"><input type="checkbox" bind:checked={form.launchAtStartup} /> 开机自启动</label>
+<label class="check"><input type="checkbox" bind:checked={form.rememberWindowPosition} /> 上次关闭位置打开</label>

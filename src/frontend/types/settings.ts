@@ -12,6 +12,9 @@ export interface AppSettings {
   alwaysOnTop: boolean;
   streamOutput: boolean;
   launchAtStartup: boolean;
+  rememberWindowPosition: boolean;
+  windowPositionX: number | null;
+  windowPositionY: number | null;
   closeAction: "tray" | "minimize";
 }
 
@@ -29,5 +32,8 @@ export const defaultSettings: AppSettings = {
   alwaysOnTop: false,
   streamOutput: false,
   launchAtStartup: false,
+  rememberWindowPosition: false,
+  windowPositionX: null,
+  windowPositionY: null,
   closeAction: "tray"
 };
